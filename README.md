@@ -3,7 +3,7 @@
 Creates HAProxy load balancer for  Nginx web server  using Docker  and Ansibe  The script will create and configure 4 docker contaire, one load balancer, and one Nginx web server that redirect to wordpress container this last one linked to mariadb. HAProxy will act as a load balancer for the Nginx web server. All of the 4 servers will be containerized using Dockerfile and Docker-Compose with ansible docker compose  playbook we can manage the docker compose file .
 
 # Overview of the project:
-[![N|Solid]( https://user-images.githubusercontent.com/39303616/158866581-e13530bd-6f25-4c9b-b920-50d815f7aa26.png)]
+![N|Solid]( https://user-images.githubusercontent.com/39303616/158866581-e13530bd-6f25-4c9b-b920-50d815f7aa26.png)
 
 
 # Prerequisites:
