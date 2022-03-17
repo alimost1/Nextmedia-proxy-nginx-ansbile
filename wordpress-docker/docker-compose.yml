@@ -1,0 +1,88 @@
+version: '3'
+services:
+
+    nginx:
+
+      image: nginx:latest
+      expose:
+        - ${NGINX_EXPOSED_PORT}
+
+      volumes:
+        - ./nginx:/etc/nginx/conf.d
+        - ./logs/nginx:/var/log/nginx
+        - ./wordpress:/var/www/html
+
+      networks:
+            my_net:
+                ipv4_address: ${NGINX_IP}
+                aliases: 
+                  - nginx
+
+      depends_on:
+      - wordpress
+
+
+    mysql:
+      image: mariadb
+
+      ports:
+      - ${MYSQL_PORT}
+      networks:
+      - my_net
+
+        
+      volumes:
+        - ./db-data:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+
+
+    wordpress:
+
+      image: wordpress:5.2.2-php7.2-fpm
+      ports:
+      - ${WODPRESS_PORT}
+      networks:
+      - my_net
+
+      volumes:
+        - ./wordpress:/var/www/html
+
+      environment:
+        - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+        - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
+        - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+        - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+  
+      depends_on:
+      - mysql
+
+
+    aproxy:
+      image: haproxy
+
+      expose:
+        - ${HA_PROXY_EXPOSED_PORT}
+      ports:
+        - ${HA_PROXY_PORT}
+
+      volumes:
+        - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      networks:
+            my_net:
+                ipv4_address: ${HA_PROXY_IP}
+                aliases: 
+                    - aproxy
+                    
+      depends_on:
+      - nginx
+
+
+networks:
+    my_net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: ${NETWORK_SUBNET}
