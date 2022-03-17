@@ -1,4 +1,4 @@
-# HAProxy load balancer for Nginx redirect to wordpress app  using Docker and Ansible  
+# Haproxy load balancer for Nginx redirect to wordpress app  using Docker and Ansible  
 
 Creates HAProxy load balancer for  Nginx web server  using Docker  and Ansibe  The script will create and configure 4 docker contaire, one load balancer, and one Nginx web server that redirect to wordpress container this last one linked to mariadb. HAProxy will act as a load balancer for the Nginx web server. All of the 4 servers will be containerized using Dockerfile and Docker-Compose with ansible docker compose  playbook we can manage the docker compose file .
 
